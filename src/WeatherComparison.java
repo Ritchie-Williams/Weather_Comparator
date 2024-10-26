@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class WeatherComparison {
 
-    private static final String API_KEY = "76c49c40af9b0bce583fc2ec3168a3d4"; // Replace with your OpenWeatherMap API Key
+    private static final String API_KEY = "API KEY GOES HERE"; // Replace with your OpenWeatherMap API Key
     private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
 
     // Method to get weather data for a city
