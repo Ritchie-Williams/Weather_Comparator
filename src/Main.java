@@ -1,10 +1,28 @@
+import java.io.IOException;
 import java.util.Scanner;
 import org.json.JSONObject;
 
 public class Main {
+    // input the location of the text file with your api data
+    // (comments are allowed with # and api key/url should be seperated by commas with no space)
+    private final static String API_FILE = "APIData.txt";
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        WeatherComparison weatherComparison = new WeatherComparison();
+        Parser parser = new Parser();
+
+        APIData apiData = null;
+
+        try {
+            apiData = parser.parseAPIData(API_FILE);
+        }
+        catch (IOException e) {
+            System.out.println("Error: check path to API file (" + API_FILE + ") ...\n"
+                    + e.getMessage());
+        }
+
+        WeatherComparison weatherComparison = new WeatherComparison(apiData);
 
         // Gets the city names from user
         System.out.print("Enter the first city name: ");

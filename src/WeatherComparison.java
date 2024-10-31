@@ -7,16 +7,17 @@ import java.nio.charset.StandardCharsets;
 import org.json.JSONObject;
 
 public class WeatherComparison {
+    APIData apiData;
 
-    private static final String API_KEY = "API KEY GOES HERE"; // Replace with your OpenWeatherMap API Key
-    private static final String API_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+    // Add apiData to instance variable
+    WeatherComparison(APIData apiData) { this.apiData = apiData; }
 
     // Method to get weather data for a city
     public JSONObject getWeatherData(String cityName) {
         try {
             // Encodes the city name to handle spaces and special characters
-            String encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8.toString());
-            String urlString = API_URL + encodedCityName + "&appid=" + API_KEY + "&units=metric";
+            String encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8);
+            String urlString = apiData.API_URL() + encodedCityName + "&appid=" + apiData.API_KEY() + "&units=metric";
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
