@@ -1,2 +1,2 @@
 # Add your API data in line below: ex. [apikey,weather apiurl, forecast apiurl]
-02cfb9c8d128c9e186de9067d36e1563,http://api.openweathermap.org/data/2.5/weather?q=,http://api.openweathermap.org/data/2.5/forecast?q=
+*****YOUR API KEY HERE*********,http://api.openweathermap.org/data/2.5/weather?q=,http://api.openweathermap.org/data/2.5/forecast?q=
