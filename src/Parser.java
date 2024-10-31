@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Parser {
-    private final static int NUMBER_OF_API_FEATURES = 2;
+    private final static int NUMBER_OF_API_FEATURES = 3;
     private final static String COMMENT_SYMBOL = "#";
     private final static String API_DELIMITER = ",";
 
@@ -40,6 +40,6 @@ public class Parser {
             throw new IOException("apiData must have " + NUMBER_OF_API_FEATURES + " features");
 
         // return newly created APIData record
-        return (new APIData(apiData.getFirst(), apiData.getLast()));
+        return (new APIData(apiData.get(0), apiData.get(1), apiData.get(2)));
     }
 }

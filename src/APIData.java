@@ -1,2 +1,2 @@
-public record APIData(String API_KEY, String API_URL) {
+public record APIData(String API_KEY, String WEATHER_API_URL, String FORECAST_API_URL) {
 }
