@@ -17,7 +17,7 @@ public class ForecastComparison {
     public JSONObject getForecast(String city) {
     try {
         String encodedCity = URLEncoder.encode(city, StandardCharsets.UTF_8);
-        String url = apiData.API_URL() + encodedCity + "&appid=" + apiData.API_KEY() + "&units=metric";
+        String url = apiData.FORECAST_API_URL() + encodedCity + "&appid=" + apiData.API_KEY() + "&units=metric";
         URL forecastUrl = new URL(url);
 
         //api request

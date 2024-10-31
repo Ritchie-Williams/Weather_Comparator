@@ -17,7 +17,7 @@ public class WeatherComparison {
         try {
             // Encodes the city name to handle spaces and special characters
             String encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8);
-            String urlString = apiData.API_URL() + encodedCityName + "&appid=" + apiData.API_KEY() + "&units=metric";
+            String urlString = apiData.WEATHER_API_URL() + encodedCityName + "&appid=" + apiData.API_KEY() + "&units=metric";
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
