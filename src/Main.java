@@ -44,7 +44,7 @@ public class Main {
         JSONObject forecastDataCity1 = forecastComparison.getForecast(city1);
         JSONObject forecastDataCity2 = forecastComparison.getForecast(city2);
 
-        // Displays and compare weather data
+        // Displays forecast data
         forecastComparison.displayForecast(city1, forecastDataCity1);
         forecastComparison.displayForecast(city2, forecastDataCity2);
 
