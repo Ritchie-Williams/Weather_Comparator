@@ -23,6 +23,7 @@ public class Main {
         }
 
         WeatherComparison weatherComparison = new WeatherComparison(apiData);
+        ForecastComparison forecastComparison = new ForecastComparison(apiData);
 
         // Gets the city names from user
         System.out.print("Enter the first city name: ");
@@ -38,6 +39,14 @@ public class Main {
         // Displays and compare weather data
         weatherComparison.displayWeatherComparison(city1, weatherDataCity1);
         weatherComparison.displayWeatherComparison(city2, weatherDataCity2);
+
+        // Fetches forecast data for both cities
+        JSONObject forecastDataCity1 = forecastComparison.getForecast(city1);
+        JSONObject forecastDataCity2 = forecastComparison.getForecast(city2);
+
+        // Displays and compare weather data
+        forecastComparison.displayForecast(city1, forecastDataCity1);
+        forecastComparison.displayForecast(city2, forecastDataCity2);
 
         scanner.close();
     }
