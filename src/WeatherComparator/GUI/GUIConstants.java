@@ -4,8 +4,10 @@ package WeatherComparator.GUI;
     Holds all constants for the GUI implementation
  */
 
+import WeatherComparator.ErrorCodes;
 
-public interface GUIConstants {
+// every GUI class will get error codes as well
+public interface GUIConstants extends ErrorCodes {
     /*
         GUI MAIN
      */

@@ -9,17 +9,38 @@ import java.nio.charset.StandardCharsets;
 import org.json.JSONObject;
 
 public class WeatherComparison {
-    APIData apiData;
+    private APIData apiData;
+    private final String[] API_URL = new String[]{"&appid=", "&units=metric"};
 
+    private String cityName;
+    private JSONObject cityWeather;
+
+    private double temperature;
+    private double windSpeed;
+    private int humidity;
+    private int airQuality;
+    private String sunsetTime;
+
+    // constructors
     // Add apiData to instance variable
-    public WeatherComparison(APIData apiData) { this.apiData = apiData; }
+    public WeatherComparison(APIData apiData) { this.apiData = apiData;}
 
-    // Method to get weather data for a city
-    public JSONObject getWeatherData(String cityName) {
+    public WeatherComparison(String cityName, APIData apiData) {
+        this.apiData = apiData;
+        setWeatherData(cityName);
+    }
+    // create JSONObject
+    public void setWeatherData(String cityName) {
+        this.cityName = cityName;
+        getWeatherData(this.cityName);
+    }
+
+    // Helper method for the constructor to get weather data for a city stored as JSONObject cityWeather
+    private void getWeatherData(String cityName) {
         try {
             // Encodes the city name to handle spaces and special characters
             String encodedCityName = URLEncoder.encode(cityName, StandardCharsets.UTF_8);
-            String urlString = apiData.WEATHER_API_URL() + encodedCityName + "&appid=" + apiData.API_KEY() + "&units=metric";
+            String urlString = apiData.WEATHER_API_URL() + encodedCityName + API_URL[0] + apiData.API_KEY() + API_URL[1];
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -33,31 +54,38 @@ public class WeatherComparison {
             in.close();
             connection.disconnect();
 
-            return new JSONObject(content.toString());
+            cityWeather = new JSONObject(content.toString());
+            getWantedValues(cityWeather); // calling the helper method from here prevents cityWeather being null but confuses flow
         } catch (Exception e) {
-            System.out.println("Error retrieving data for " + cityName + ": " + e.getMessage());
-            return null;
+            throw new IllegalArgumentException("Error retrieving data for " + cityName + ": " + e.getMessage());
         }
     }
 
-    // Method to display relevant weather data from a JSONObject
-    public void displayWeatherComparison(String cityName, JSONObject weatherData) {
-        if (weatherData != null) {
-            double temperature = weatherData.getJSONObject("main").getDouble("temp");
-            double windSpeed = weatherData.getJSONObject("wind").getDouble("speed");
-            int humidity = weatherData.getJSONObject("main").getInt("humidity");
-            int airQuality = weatherData.getInt("visibility");  // Approximate visibility as air quality
-            String sunsetTime = new java.text.SimpleDateFormat("HH:mm")
-                    .format(new java.util.Date(weatherData.getJSONObject("sys").getLong("sunset") * 1000L));
+    // helper function to get relevant data
+    private void getWantedValues(JSONObject cityWeather) {
+        temperature = cityWeather.getJSONObject("main").getDouble("temp");
+        windSpeed = cityWeather.getJSONObject("wind").getDouble("speed");
+        humidity = cityWeather.getJSONObject("main").getInt("humidity");
+        airQuality = cityWeather.getInt("visibility");  // Approximate visibility as air quality
+        sunsetTime = new java.text.SimpleDateFormat("HH:mm")
+                .format(new java.util.Date(cityWeather.getJSONObject("sys").getLong("sunset") * 1000L));
+    }
 
-            System.out.println("\nWeather Data for " + cityName + ":");
-            System.out.println("Temperature: " + temperature + " °C");
-            System.out.println("Wind Speed: " + windSpeed + " m/s");
-            System.out.println("Precipitation: " + humidity + " %");
-            System.out.println("Air Quality (Visibility): " + airQuality + " meters");
-            System.out.println("Sunset Time: " + sunsetTime);
-        } else {
-            System.out.println("No weather data available for " + cityName);
-        }
+    // getters
+    public double getTemperature() { return temperature; }
+    public double getWindSpeed() { return windSpeed; }
+    public int getHumidity() { return humidity; }
+    public int getAirQuality() { return airQuality; }
+    public String getSunsetTime() { return sunsetTime; }
+    public String getCityName() { return cityName; }
+
+    // Method to display relevant weather data from a weatherComparison object
+    public void displayWeatherComparison() {
+        System.out.println("\nWeather Data for " + cityName + ":");
+        System.out.println("Temperature: " + temperature + " °C");
+        System.out.println("Wind Speed: " + windSpeed + " m/s");
+        System.out.println("Precipitation: " + humidity + " %");
+        System.out.println("Air Quality (Visibility): " + airQuality + " meters");
+        System.out.println("Sunset Time: " + sunsetTime);
     }
 }
