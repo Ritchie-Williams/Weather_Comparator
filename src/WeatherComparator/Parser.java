@@ -1,4 +1,4 @@
-
+package WeatherComparator;
 /*
     Parses given API text file for data
  */
@@ -18,7 +18,7 @@ public class Parser {
     private final static String API_DELIMITER = ",";
 
 
-    // parse API data from a given text file and return as an APIData record
+    // parse API data from a given text file and return as an WeatherComparator.APIData record
     /*
         COMMENTS: A LINE BEGINNING WITH '#'
         PUT API KEY AND API URL IN SAME LINE DELIMITED BY A COMMA
@@ -39,7 +39,7 @@ public class Parser {
         if (apiData.size() != NUMBER_OF_API_FEATURES)
             throw new IOException("apiData must have " + NUMBER_OF_API_FEATURES + " features");
 
-        // return newly created APIData record
+        // return newly created WeatherComparator.APIData record
         return (new APIData(apiData.get(0), apiData.get(1), apiData.get(2)));
     }
 }

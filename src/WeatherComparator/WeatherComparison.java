@@ -1,3 +1,5 @@
+package WeatherComparator;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -10,7 +12,7 @@ public class WeatherComparison {
     APIData apiData;
 
     // Add apiData to instance variable
-    WeatherComparison(APIData apiData) { this.apiData = apiData; }
+    public WeatherComparison(APIData apiData) { this.apiData = apiData; }
 
     // Method to get weather data for a city
     public JSONObject getWeatherData(String cityName) {
