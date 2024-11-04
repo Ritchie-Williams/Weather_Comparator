@@ -51,7 +51,7 @@ public class WeatherAppPanel extends JPanel
         // forecast button
         forecastButton = new JButton("View Forecast");
         forecastButton.setVisible(false);  // hidden initially
-        //forecastButton.addActionListener(new ForecastButtonListener());
+        forecastButton.addActionListener(new ForecastButtonListener());
         forecastButton.setBackground(new Color(230, 190, 255)); // light purple
         forecastButton.setBorder(new LineBorder(new Color(255, 200, 120), 2)); // light orange
         forecastButton.setOpaque(true);
@@ -127,4 +127,29 @@ public class WeatherAppPanel extends JPanel
             forecastButton.setVisible(true);
         }
     }
+    // Listener for forecast Button
+    private class ForecastButtonListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            ForecastPanel forecastPanel = new ForecastPanel();
+            forecastPanel.setVisible(true);
+
+
+            // CONSOLE TEST--------------------------------------------------------------------------------------------------------
+            String city1 = city1Field.getText().trim();
+            String city2 = city2Field.getText().trim();
+            if (city1.isEmpty() || city2.isEmpty())
+            {
+                JOptionPane.showMessageDialog(WeatherAppPanel.this, "Please enter both city names.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            JSONObject forecastData1 = forecastComparison.getForecast(city1);
+            JSONObject forecastData2 = forecastComparison.getForecast(city2);
+            forecastComparison.displayForecast(city1, forecastData1);
+            forecastComparison.displayForecast(city2, forecastData2);
+        }
+
+        }
 }
