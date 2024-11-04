@@ -1,19 +1,25 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.json.JSONObject;
 
-public class WeatherAppPanel extends JPanel {
+public class WeatherAppPanel extends JPanel
+{
     private final WeatherComparison weatherComparison;
+    private final ForecastComparison forecastComparison;
     private final JTextField city1Field;
     private final JTextField city2Field;
     private final JTextArea resultArea;
     private final JButton compareButton;
     private final JButton resetButton;
+    private final JButton forecastButton;
 
     public WeatherAppPanel(APIData apiData) {
         this.weatherComparison = new WeatherComparison(apiData);
+        this.forecastComparison = new ForecastComparison(apiData);
 
         // Setting layout
         setLayout(new BorderLayout());
@@ -41,6 +47,17 @@ public class WeatherAppPanel extends JPanel {
         resetButton = new JButton("Reset");
         resetButton.addActionListener(e -> resetFields());
         inputPanel.add(resetButton);
+
+        // forecast button
+        forecastButton = new JButton("View Forecast");
+        forecastButton.setVisible(false);  // hidden initially
+        //forecastButton.addActionListener(new ForecastButtonListener());
+        forecastButton.setBackground(new Color(230, 190, 255)); // light purple
+        forecastButton.setBorder(new LineBorder(new Color(255, 200, 120), 2)); // light orange
+        forecastButton.setOpaque(true);
+        forecastButton.setFocusPainted(false);
+        add(forecastButton, BorderLayout.SOUTH);
+
 
         // Result Area
         resultArea = new JTextArea(15, 40);
@@ -105,6 +122,9 @@ public class WeatherAppPanel extends JPanel {
 
             displayWeatherInTextArea(city1, weatherData1);
             displayWeatherInTextArea(city2, weatherData2);
+
+            // show forecast button
+            forecastButton.setVisible(true);
         }
     }
 }
