@@ -10,4 +10,5 @@ public interface ErrorCodes {
 
     // specific
     int API_DATA_INVALID = 2;
+    int FILE_PATH_INVALID = 3;
 }

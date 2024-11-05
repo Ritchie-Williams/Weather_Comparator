@@ -6,20 +6,23 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
 import org.json.JSONObject;
 
 public class WeatherComparison {
     private APIData apiData;
     private final String[] API_URL = new String[]{"&appid=", "&units=metric"};
+    private final static int MAIN_CONDITION = 2;
 
     private String cityName;
     private JSONObject cityWeather;
-
     private double temperature;
     private double windSpeed;
     private int humidity;
     private int airQuality;
     private String sunsetTime;
+    private String condition;
 
     // constructors
     // Add apiData to instance variable
@@ -69,6 +72,8 @@ public class WeatherComparison {
         airQuality = cityWeather.getInt("visibility");  // Approximate visibility as air quality
         sunsetTime = new java.text.SimpleDateFormat("HH:mm")
                 .format(new java.util.Date(cityWeather.getJSONObject("sys").getLong("sunset") * 1000L));
+        condition = cityWeather.getJSONArray("weather").getJSONObject(0)
+                .getString("description"); // ex. 'rain', 'overcast clouds', etc
     }
 
     // getters
@@ -78,6 +83,22 @@ public class WeatherComparison {
     public int getAirQuality() { return airQuality; }
     public String getSunsetTime() { return sunsetTime; }
     public String getCityName() { return cityName; }
+    public String getCondition() { return condition; }
+    public ArrayList<Object> getConditions() {
+        ArrayList<Object> conditions = new ArrayList<>();
+        // update variables
+        getWantedValues(cityWeather);
+        // add to array list
+        conditions.add("\nWeather Data for " + getCityName() + ":");
+        conditions.add("Currently " + getCondition());
+        conditions.add("Temperature: " + getTemperature() + " °C");
+        conditions.add("Wind Speed: " + getWindSpeed() + " m/s");
+        conditions.add("Precipitation: " + getHumidity() + " %");
+        conditions.add("Air Quality (Visibility): " + getAirQuality() + " meters");
+        conditions.add("Sunset Time: " + getSunsetTime());
+        // return
+        return conditions;
+    }
 
     // Method to display relevant weather data from a weatherComparison object
     public void displayWeatherComparison() {

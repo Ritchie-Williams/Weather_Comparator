@@ -41,6 +41,6 @@ public class Main implements ErrorCodes, GlobalConstants {
             weatherComparison.displayWeatherComparison();
         }
 
-        ForecastComparison forecastComparison = new ForecastComparison(apiData);
+        //ForecastComparison forecastComparison = new ForecastComparison(apiData);
     }
 }

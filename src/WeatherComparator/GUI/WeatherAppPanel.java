@@ -79,6 +79,7 @@ public class WeatherAppPanel extends JPanel implements GlobalConstants {
         resultArea.append("Humidity: " + weatherComparison.getHumidity() + " %\n");
         resultArea.append("Air Quality (Visibility): " + weatherComparison.getAirQuality()+ " meters\n");
         resultArea.append("Sunset Time: " + weatherComparison.getSunsetTime() + "\n");
+        resultArea.append("Current conditions: " + weatherComparison.getCondition() + "\n");
 
         resultArea.append("\n"); // Spacer between city data
     }
