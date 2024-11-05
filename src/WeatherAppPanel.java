@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
+
 import org.json.JSONObject;
 
 public class WeatherAppPanel extends JPanel
@@ -127,28 +129,45 @@ public class WeatherAppPanel extends JPanel
             forecastButton.setVisible(true);
         }
     }
-    // Listener for forecast Button
+    // listener for forecastButton
     private class ForecastButtonListener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            ForecastPanel forecastPanel = new ForecastPanel();
-            forecastPanel.setVisible(true);
-
-
-            // CONSOLE TEST--------------------------------------------------------------------------------------------------------
             String city1 = city1Field.getText().trim();
             String city2 = city2Field.getText().trim();
+
+            JSONObject forecastData1 = forecastComparison.getForecast(city1);
+            JSONObject forecastData2 = forecastComparison.getForecast(city2);
+
+            // check is data is availible
+            if (forecastData1 == null || forecastData2 == null)
+            {
+                JOptionPane.showMessageDialog(WeatherAppPanel.this,
+                        "Forecast data not available for one or both cities.",
+                        "Data Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // get data -- func call
+            Map<String, List<String>> groupedData1 = forecastComparison.groupForecastByDay(forecastData1);
+            Map<String, List<String>> groupedData2 = forecastComparison.groupForecastByDay(forecastData2);
+
+            // pass data to forecastPanel
+            ForecastPanel Forecastpanel = new ForecastPanel(city1, groupedData1, city2, groupedData2);
+            Forecastpanel.setVisible(true);
+
+            // CONSOLE TEST--------------------------------------------------------------------------------------------------------
+            String fcity1 = city1Field.getText().trim();
+            String fcity2 = city2Field.getText().trim();
             if (city1.isEmpty() || city2.isEmpty())
             {
                 JOptionPane.showMessageDialog(WeatherAppPanel.this, "Please enter both city names.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            JSONObject forecastData1 = forecastComparison.getForecast(city1);
-            JSONObject forecastData2 = forecastComparison.getForecast(city2);
-            forecastComparison.displayForecast(city1, forecastData1);
-            forecastComparison.displayForecast(city2, forecastData2);
+            forecastComparison.displayForecast(fcity1, forecastData1);
+            forecastComparison.displayForecast(fcity2, forecastData2);
         }
 
         }
