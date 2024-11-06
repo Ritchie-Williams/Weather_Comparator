@@ -83,7 +83,6 @@ public class ForecastComparison
         connection.disconnect();
 
         //return string as a JSONObject
-        System.out.println("API Response: " + content.toString()); //---------------------------
         return new JSONObject(content.toString());
             } catch (Exception e) {
         System.out.println("Error gathering data for " + city + ": " + e.getMessage()); //error handling
