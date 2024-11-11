@@ -27,3 +27,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+*.jar
+*.xml
+*.xml
+*.iml
+APIData.txt
