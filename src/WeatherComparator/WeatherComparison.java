@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 public class WeatherComparison {
-    private APIData apiData;
+    private final APIData apiData;
     private final String[] API_URL = new String[]{"&appid=", "&units=metric"};
     private final static int MAIN_CONDITION = 2;
 

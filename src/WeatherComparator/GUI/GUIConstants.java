@@ -5,6 +5,7 @@ package WeatherComparator.GUI;
  */
 
 import WeatherComparator.ErrorCodes;
+import WeatherComparator.GlobalConstants;
 
 import java.awt.*;
 
@@ -17,6 +18,11 @@ public interface GUIConstants extends ErrorCodes {
     /*
         WEATHER APP PANEL
      */
+    /*
+        FORECAST PANEL
+     */
+    Dimension FORECAST_FRAME_DIMENSION = new Dimension(700, 800);
+    Dimension FORECAST_SCROLL_PANE = new Dimension(150, 100);
 
     /*
         CITY PANEL

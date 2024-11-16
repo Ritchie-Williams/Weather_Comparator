@@ -1,14 +1,21 @@
 package WeatherComparator.GUI;
 
+import WeatherComparator.GlobalConstants;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
 
-public class ForecastPanel extends JFrame
+public class ForecastPanel extends JFrame implements GUIConstants, GlobalConstants
 {
+    private ArrayList<JList<String>> cityDayList;
+    private ArrayList<JTextArea> cityForecastDetailArea;
+    private ArrayList<String> cityName;
+    private ArrayList<Map<String, List<String>>> cityForecastData;
     private JList<String> city1DayList;
     private JList<String> city2DayList;
     private JTextArea city1ForecastDetailsArea;
@@ -18,16 +25,21 @@ public class ForecastPanel extends JFrame
     private Map<String, List<String>> city1ForecastData;
     private Map<String, List<String>> city2ForecastData;
 
-    public ForecastPanel(String city1Name, Map<String, List<String>> city1ForecastData,
-                         String city2Name, Map<String, List<String>> city2ForecastData)
-    {
-        this.city1Name = city1Name;
-        this.city1ForecastData = city1ForecastData;
-        this.city2Name = city2Name;
-        this.city2ForecastData = city2ForecastData;
+    public ForecastPanel(ArrayList<String> cityName,
+                         ArrayList<Map<String, List<String>>> cityForecastData) {
+        this.cityName = cityName;
+        this.cityForecastData = cityForecastData;
+        StringBuilder title = new StringBuilder("Forecast Comparison: ");
 
-        setTitle("Forecast Comparison: " + city1Name + " and " + city2Name);
-        setSize(700, 800);
+        for (int i = 0; i < cityName.size(); i++) {
+            if (i != cityName.size() - 1)
+                title.append(cityName.get(i)).append(" and ");
+            else
+                title.append(cityName.get(i));
+        }
+
+        setTitle(title.toString());
+        setSize(FORECAST_FRAME_DIMENSION);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -35,26 +47,25 @@ public class ForecastPanel extends JFrame
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // city 1 Section
-        city1DayList = new JList<>(new DefaultListModel<>());
-        city1ForecastDetailsArea = new JTextArea(8, 40);
-        JPanel city1Panel = createCityForecastPanel(city1Name, city1ForecastData, city1DayList, city1ForecastDetailsArea);
-        mainPanel.add(city1Panel);
-        mainPanel.add(Box.createVerticalStrut(20)); // Space between sections
+        // city Section
+        for (int i = 0; i < NUMBER_OF_CITIES; i++) {
+            cityDayList.add(new JList<>(new DefaultListModel<>()));
+            cityForecastDetailArea.add(new JTextArea(8,40));
+            JPanel cityPanel = createCityForecastPanel(cityName, cityForecastData,
+                    cityDayList, cityForecastDetailArea.get(i));
+            mainPanel.add(cityPanel);
 
-        // city 2 Section
-        city2DayList = new JList<>(new DefaultListModel<>());
-        city2ForecastDetailsArea = new JTextArea(8, 40);
-        JPanel city2Panel = createCityForecastPanel(city2Name, city2ForecastData, city2DayList, city2ForecastDetailsArea);
-        mainPanel.add(city2Panel);
+            if (i != NUMBER_OF_CITIES - 1)
+                mainPanel.add(Box.createVerticalStrut(20));
+        }
 
         // add main panel to frame
         add(mainPanel);
         populateDayLists();
     }
 
-    private JPanel createCityForecastPanel(String cityName, Map<String, List<String>> forecastData,
-                                           JList<String> dayList, JTextArea forecastDetailsArea)
+    private JPanel createCityForecastPanel(ArrayList<String> cityName, ArrayList<Map<String, List<String>>> forecastData,
+                                           ArrayList<JList<String>> dayList, JTextArea forecastDetailsArea)
     {
         JPanel cityPanel = new JPanel();
         cityPanel.setLayout(new BoxLayout(cityPanel, BoxLayout.Y_AXIS));
@@ -66,12 +77,17 @@ public class ForecastPanel extends JFrame
         cityPanel.add(cityLabel);
 
         // date selection list
-        dayList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        dayList.addListSelectionListener(e -> displayForecastForSelectedDay(dayList, forecastDetailsArea, forecastData));
-        JScrollPane dayListScrollPane = new JScrollPane(dayList);
-        dayListScrollPane.setPreferredSize(new Dimension(150, 100));
-        cityPanel.add(dayListScrollPane);
+        ArrayList<JScrollPane> dayListScrollPane = new ArrayList<>();
 
+        for (int i = 0; i < NUMBER_OF_CITIES; i++) {
+            dayList.get(i).setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            int finalI = i;
+            dayList.get(i).addListSelectionListener(e->displayForecastForSelectedDay(dayList.get(finalI), forecastDetailsArea,
+                    (Map<String, List<String>>) forecastData));
+            dayListScrollPane.add(new JScrollPane(dayList.get(i)));
+            dayListScrollPane.get(i).setPreferredSize(FORECAST_SCROLL_PANE);
+            cityPanel.add(dayListScrollPane.get(i));
+        }
         // forecast details area
         forecastDetailsArea.setEditable(false);
         forecastDetailsArea.setLineWrap(true);
