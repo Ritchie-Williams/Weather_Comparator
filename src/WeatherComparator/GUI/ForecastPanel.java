@@ -16,15 +16,8 @@ public class ForecastPanel extends JFrame implements GUIConstants, GlobalConstan
     private ArrayList<JTextArea> cityForecastDetailArea;
     private ArrayList<String> cityName;
     private ArrayList<Map<String, List<String>>> cityForecastData;
-    private JList<String> city1DayList;
-    private JList<String> city2DayList;
-    private JTextArea city1ForecastDetailsArea;
-    private JTextArea city2ForecastDetailsArea;
-    private String city1Name;
-    private String city2Name;
-    private Map<String, List<String>> city1ForecastData;
-    private Map<String, List<String>> city2ForecastData;
 
+    // constructor
     public ForecastPanel(ArrayList<String> cityName,
                          ArrayList<Map<String, List<String>>> cityForecastData) {
         this.cityName = cityName;
@@ -100,8 +93,12 @@ public class ForecastPanel extends JFrame implements GUIConstants, GlobalConstan
 
     private void populateDayLists()
     {
-        populateDayList(city1DayList, city1ForecastData);
-        populateDayList(city2DayList, city2ForecastData);
+        assert cityDayList != null;
+        assert cityForecastDetailArea != null;
+
+        for (int i = 0; i < NUMBER_OF_CITIES; i++) {
+            populateDayList(cityDayList.get(i), cityForecastData.get(i));
+        }
     }
 
     private void populateDayList(JList<String> dayList, Map<String, List<String>> forecastData)
